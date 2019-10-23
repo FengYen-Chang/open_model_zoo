@@ -93,7 +93,8 @@ def main():
     # Speech feature extration
     _wave = wave.open(args.input, 'rb')
     fs = _wave.getframerate()
-    if fs is not 16000:
+    
+    if fs != 16000:
         log.error("Please using 16kHz wave file, not {}Hz\n".format(fs))
     _length = _wave.getnframes()
     audio = np.frombuffer(_wave.readframes(_length), dtype=np.dtype('<h'))
