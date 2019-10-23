@@ -23,8 +23,7 @@ import logging as log
 from time import time
 from openvino.inference_engine import IENetwork, IECore
 
-# For Speech Feature
-import wave, struct
+import wave
 import codecs
 
 from speech_features import audio_spectrogram, mfcc 
