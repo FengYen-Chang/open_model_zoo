@@ -246,7 +246,7 @@ class DLSDKLauncher(Launcher):
 
         self.run_audio = get_parameter_value_from_config(self.config, DLSDKLauncher.parameters(), 'run_audio')
         self.audio_hidden_state = get_parameter_value_from_config(self.config, DLSDKLauncher.parameters(),
-                                                                   'audio_hidden_state')
+                                                                  'audio_hidden_state')
 
 
     @property
