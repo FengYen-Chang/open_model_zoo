@@ -13,10 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
+import numpy as np
 from ..config import NumberField
 from .preprocessor import Preprocessor
-import numpy as np
+
 
 class CreateOverlapWindows(Preprocessor):
     __provider__ = 'overlap_creator'
@@ -233,7 +233,7 @@ class MfccFeature(Preprocessor):
                 melf = freq2mel(i * hz_per_sbin)
                 if start_index <= i <= end_index:
                     while ((center_frequencies[int(channel)] < melf) and
-                        (channel < filterbank_channel_count_)):
+                           (channel < filterbank_channel_count_)):
                         channel += 1
                     band_mapper[i] = channel - 1
 
@@ -244,10 +244,10 @@ class MfccFeature(Preprocessor):
                 if start_index <= i <= end_index:
                     if channel >= 0:
                         weights[i] = ((center_frequencies[int(channel) + 1] - freq2mel(i * hz_per_sbin)) /
-                                    (center_frequencies[int(channel) + 1] - center_frequencies[int(channel)]))
+                                      (center_frequencies[int(channel) + 1] - center_frequencies[int(channel)]))
                     else:
                         weights[i] = ((center_frequencies[0] - freq2mel(i * hz_per_sbin)) /
-                                    (center_frequencies[0] - mel_low))
+                                      (center_frequencies[0] - mel_low))
 
             return start_index, end_index, weights, band_mapper
 
