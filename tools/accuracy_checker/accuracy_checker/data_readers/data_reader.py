@@ -18,6 +18,7 @@ from pathlib import Path
 from functools import singledispatch
 from collections import OrderedDict, namedtuple
 import re
+import wave
 import cv2
 from PIL import Image
 import numpy as np
@@ -27,13 +28,9 @@ try:
 except ImportError as import_error:
     tf = None
 
-# For audio:
-import wave, struct
-
 from ..utils import get_path, read_json, zipped_transform, set_image_metadata, contains_all
 from ..dependency import ClassProvider
 from ..config import BaseField, StringField, ConfigValidator, ConfigError, DictField, ListField
-
 
 
 class DataRepresentation:
