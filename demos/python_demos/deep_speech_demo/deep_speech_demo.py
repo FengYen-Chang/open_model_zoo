@@ -48,35 +48,9 @@ def build_argparser():
                            "acceptable. The sample will look for a suitable plugin for device specified. Default "
                            "value is CPU",
                       default="CPU", type=str)
-    # args.add_argument("-a", "--alphabet", help="Required. Path to a alphabet file.", required=True, default="alphabet_b.txt", type=str)
 
     return parser
 
-"""
-class Alphabet(object):
-    def __init__(self, config_file):
-        self._label_to_str = []
-        self._str_to_label = {}
-        self._size = 0
-        with codecs.open(config_file, 'r', 'utf-8') as fin:
-            for line in fin:
-                if line[0:2] == '\\#':
-                    line = '#\n'
-                elif line[0] == '#':
-                    continue
-                self._label_to_str += line[:-1] # remove the line ending
-                self._str_to_label[line[:-1]] = self._size
-                self._size += 1
-
-    def string_from_label(self, label):
-        return self._label_to_str[label]
-
-    def label_from_string(self, string):
-        return self._str_to_label[string]
-
-    def size(self):
-        return self._size
-"""
 
 n_input    = 26
 n_context  = 9
@@ -89,7 +63,6 @@ def main():
     log.basicConfig(format="[ %(levelname)s ] %(message)s", level=log.INFO, stream=sys.stdout)
     args = build_argparser().parse_args()
     
-    # alphabet = Alphabet(os.path.abspath(args.alphabet))
     alphabet = " abcdefghijklmnopqrstuvwxyz'-"    
 
     # Speech feature extration
@@ -163,7 +136,6 @@ def main():
 
     state_h = np.zeros((1, 2048))
     state_c = np.zeros((1, 2048))
-    # logits = np.empty([0, 1, alphabet.size()])
     logits = np.empty([0, 1, len(alphabet)])
 
     for i in range(0, len(features), n_steps):
@@ -184,12 +156,10 @@ def main():
                                       'input_node': [chunk]})
                                       
         # Processing output blob
-        #log.info("Processing output blob")
         logits = np.concatenate((logits, res['Softmax']))
         state_h = res['lstm_fused_cell/BlockLSTM/TensorIterator.1']
         state_c = res['lstm_fused_cell/BlockLSTM/TensorIterator.2']
         
-    # print("\n>>>{}\n".format(ctc_beam_search_decoder(logits, alphabet._label_to_str, alphabet.string_from_label(-1), beamwidth)))
     print ("\n>>>{}\n".format(ctc_beam_search_decoder(logits, alphabet, alphabet[-1], beamwidth)))
 
 if __name__ == '__main__':
