@@ -685,7 +685,10 @@ class DLSDKLauncher(Launcher):
             if len(layer_shape) == 4:
                 if len(data_shape) == 5:
                     data = data[0]
-                return np.transpose(data, layout)
+                if self.run_audio:
+                    return data
+                else:
+                    return np.transpose(data, layout)
 
             if len(layer_shape) == 2 and len(data_shape) == 1:
                 return np.transpose([data])
