@@ -18,6 +18,7 @@ from ..config import PathField
 from ..representation import CharacterRecognitionAnnotation
 from ..utils import read_txt, check_file_existence
 from .format_converter import BaseFormatConverter, ConverterReturn
+import os
 
 class LibriSpeechFormatConverter(BaseFormatConverter):
     __provider__ = 'libri_speech'
@@ -57,6 +58,7 @@ class LibriSpeechFormatConverter(BaseFormatConverter):
         for _id, _file in enumerate(label_files):
             label = read_txt(_file)[0].lower()
             audio_name = _file[:-3] + 'wav'
+            audio_name = os.path.split(audio_name)[-1]
             annotations.append(CharacterRecognitionAnnotation(audio_name, label))
             if check_content:
                 if not check_file_existence(self.images_dir / audio_name):
