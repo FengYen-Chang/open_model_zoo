@@ -29,6 +29,7 @@ models:
         reader: audio_reader
         annotation: libri_speech.pickle
         dataset_meta: libri_speech.json
+        data_source: small-wav
 
         preprocessing:
           - type: audio_normalizer
