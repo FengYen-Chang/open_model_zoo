@@ -708,6 +708,9 @@ class BeamSearchDecoder(Adapter):
             ),
             'softmaxed_probabilities': BoolField(
                 optional=True, default=False, description="Indicator that model uses softmax for output layer "
+            ),
+            'output_node': StringField(
+                optional=True, description="for assign a specific output node (default will using the node from launcher.output_blob)"
             )
         })
         return parameters
@@ -722,10 +725,15 @@ class BeamSearchDecoder(Adapter):
         self.beam_size = self.get_value_from_config('beam_size')
         self.blank_label = self.launcher_config.get('blank_label', len(self.label_map))
         self.softmaxed_probabilities = self.get_value_from_config('softmaxed_probabilities')
+        self.output_node = self.get_value_from_config('output_node')
 
     def process(self, raw, identifiers=None, frame_meta=None):
         raw_output = self._extract_predictions(raw, frame_meta)
-        output = raw_output[self.output_blob]
+        if (self.output_node) :
+            output = raw_output[self.output_node]
+        else:
+            output = raw_output[self.output_blob]
+ 
         output = np.swapaxes(output, 0, 1)
 
         result = []
